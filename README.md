@@ -82,7 +82,7 @@ A modern, responsive landing page built with **Next.js 14** and **Material-UI v5
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/NamanRajput-git/Frontend.git
    cd hackathon-landing-page
    ```
 
