@@ -10,12 +10,15 @@ import {
   Avatar,
   IconButton,
   Grid,
+  useTheme,
+  alpha,
 } from '@mui/material'
 import { ChevronLeft, ChevronRight, Star } from '@mui/icons-material'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const TestimonialsSection: React.FC = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const theme = useTheme()
 
   const testimonials = [
     {
@@ -65,12 +68,14 @@ const TestimonialsSection: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {/* Video Background */}
+      {/* Video Background (hidden on mobile) */}
       <Box
         component="video"
         autoPlay
         loop
         muted
+        playsInline
+        poster="/assets/testimonials-poster.jpg"
         sx={{
           position: 'absolute',
           top: 0,
@@ -79,12 +84,27 @@ const TestimonialsSection: React.FC = () => {
           height: '100%',
           objectFit: 'cover',
           zIndex: -2,
+          display: { xs: 'none', md: 'block' },
         }}
       >
         <source src="/assets/testimonials.mp4" type="video/mp4" />
       </Box>
+      {/* Fallback static image for mobile */}
+      <Box
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: -2,
+          background: `url(/assets/testimonials-poster.jpg) center center / cover no-repeat`,
+          filter: 'brightness(0.7)',
+        }}
+      />
 
-      {/* Overlay */}
+      {/* Gradient Overlay (adapts to theme) */}
       <Box
         sx={{
           position: 'absolute',
@@ -92,7 +112,11 @@ const TestimonialsSection: React.FC = () => {
           left: 0,
           width: '100%',
           height: '100%',
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          background: `linear-gradient(
+            to bottom,
+            ${alpha(theme.palette.background.default, 0.5)} 0%,
+            ${alpha(theme.palette.background.default, 0.85)} 100%
+          )`,
           zIndex: -1,
         }}
       />

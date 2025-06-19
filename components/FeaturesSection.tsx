@@ -1,150 +1,113 @@
 'use client'
 
-import React from 'react'
-import {
-  Box,
-  Container,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  IconButton,
-} from '@mui/material'
-import {
-  Bolt,
-  Security,
-  Speed,
-  Palette,
-  Cloud,
-  Mobile,
-} from '@mui/icons-material'
-import { motion } from 'framer-motion'
+import React from 'react';
+import { Box, Container, Typography, Button, Grid, useTheme, useMediaQuery } from '@mui/material';
+import { motion } from 'framer-motion';
+import { useRef, useState } from 'react';
 
 const FeaturesSection: React.FC = () => {
-  const features = [
-    {
-      icon: <Bolt />,
-      title: 'Lightning Fast',
-      description: 'Built with Next.js 14 for optimal performance and speed',
-    },
-    {
-      icon: <Security />,
-      title: 'Secure by Design',
-      description: 'Enterprise-grade security with best practices built-in',
-    },
-    {
-      icon: <Speed />,
-      title: 'High Performance',
-      description: 'Optimized for speed with server-side rendering',
-    },
-    {
-      icon: <Palette />,
-      title: 'Beautiful UI',
-      description: 'Modern Material-UI components with stunning animations',
-    },
-    {
-      icon: <Cloud />,
-      title: 'Cloud Ready',
-      description: 'Deploy anywhere with seamless cloud integration',
-    },
-    {
-      icon: <Mobile />,
-      title: 'Mobile First',
-      description: 'Responsive design that works perfectly on all devices',
-    },
-  ]
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
     <Box
       id="features"
       sx={{
-        py: { xs: 8, md: 12 },
+        py: 8,
         backgroundColor: 'background.default',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
       <Container maxWidth="lg">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <Box textAlign="center" mb={8}>
-            <Typography
-              variant="h2"
-              sx={{
-                mb: 2,
-                fontSize: { xs: '2rem', md: '3rem' },
-                fontWeight: 700,
-                background: 'linear-gradient(45deg, #1976d2, #90caf9)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
+        <Grid container spacing={6} alignItems="center">
+          {/* Video Side (hidden on mobile) */}
+          <Grid item xs={12} md={6} sx={{ display: { xs: 'none', md: 'block' } }}>
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
             >
-              Powerful Features
-            </Typography>
-            <Typography
-              variant="h6"
-              color="text.secondary"
-              sx={{ maxWidth: 600, mx: 'auto' }}
-            >
-              Everything you need to build modern, scalable applications
-            </Typography>
-          </Box>
-        </motion.div>
-
-        <Grid container spacing={4}>
-          {features.map((feature, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
+              <Box
+                sx={{
+                  position: 'relative',
+                  width: '100%',
+                  height: 0,
+                  paddingTop: '56.25%', // 16:9 aspect ratio
+                  borderRadius: 4,
+                  overflow: 'hidden',
+                  boxShadow: 3,
+                  background: theme.palette.mode === 'dark' ? '#222' : '#eee',
+                }}
               >
-                <Card
-                  sx={{
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  onLoadedData={() => setIsVideoLoaded(true)}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
                     height: '100%',
-                    textAlign: 'center',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      boxShadow: (theme) =>
-                        theme.palette.mode === 'light'
-                          ? '0 8px 25px rgba(0,0,0,0.15)'
-                          : '0 8px 25px rgba(255,255,255,0.15)',
-                    },
+                    objectFit: 'cover',
+                    opacity: isVideoLoaded ? 1 : 0,
+                    transition: 'opacity 1s ease-in-out',
                   }}
+                  poster="/assets/features-services-poster.jpg"
                 >
-                  <CardContent sx={{ p: 4 }}>
-                    <IconButton
-                      sx={{
-                        mb: 2,
-                        backgroundColor: 'primary.main',
-                        color: 'primary.contrastText',
-                        '&:hover': {
-                          backgroundColor: 'primary.dark',
-                        },
-                      }}
-                    >
-                      {feature.icon}
-                    </IconButton>
-                    <Typography variant="h5" fontWeight={600} mb={2}>
-                      {feature.title}
-                    </Typography>
-                    <Typography color="text.secondary">
-                      {feature.description}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </Grid>
-          ))}
+                  <source src="/assets/features-services.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                {/* Optional: fallback image for slow networks or mobile */}
+              </Box>
+            </motion.div>
+          </Grid>
+          {/* Text Side */}
+          <Grid item xs={12} md={6}>
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+            >
+              <Box textAlign={{ xs: 'center', md: 'left' }} mb={4}>
+                <Typography variant="h2" component="h2" gutterBottom>
+                  Features
+                </Typography>
+                <Typography variant="h6" color="text.secondary">
+                  Discover the powerful features that make our platform unique. Designed for performance, security, and seamless user experience.
+                </Typography>
+              </Box>
+              <Box>
+                <ul style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0,
+                  color: theme.palette.text.primary,
+                  fontSize: '1.1rem',
+                  lineHeight: 1.7,
+                }}>
+                  <li>⚡ Blazing fast performance</li>
+                  <li>🔒 Enterprise-grade security</li>
+                  <li>🎨 Beautiful, adaptive UI</li>
+                  <li>🌙 Light & Dark mode support</li>
+                  <li>🔗 Seamless integrations</li>
+                </ul>
+              </Box>
+            </motion.div>
+          </Grid>
         </Grid>
       </Container>
     </Box>
-  )
-}
+  );
+};
 
-export default FeaturesSection 
+export default FeaturesSection;

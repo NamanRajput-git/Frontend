@@ -3,8 +3,8 @@
 import React, { useState } from 'react'
 import { Box } from '@mui/material'
 import Loader from '@/components/Loader'
-import Navigation from '@/components/Navigation'
-import HeroSection from '@/components/HeroSection'
+import Navigation from '@/components/Navbar'
+import Hero from '@/components/Hero'
 import FeaturesSection from '@/components/FeaturesSection'
 import ServicesSection from '@/components/ServicesSection'
 import StatsSection from '@/components/StatsSection'
@@ -25,8 +25,22 @@ const HomePage: React.FC = () => {
 
   return (
     <Box>
-      <Navigation />
-      <HeroSection />
+      <Navigation
+        sections={[
+          { id: 'features', title: 'Features' },
+          { id: 'services', title: 'Services' },
+          { id: 'stats', title: 'Stats' },
+          { id: 'testimonials', title: 'Testimonials' },
+          { id: 'contact', title: 'Contact' },
+        ]}
+      />
+      <Hero
+        id="hero"
+        title="Welcome to Our Platform"
+        subtitle="Experience the future of web development with our cutting-edge platform"
+        ctaText="Get Started"
+        ctaLink="#contact"
+      />
       <FeaturesSection />
       <ServicesSection />
       <StatsSection />
