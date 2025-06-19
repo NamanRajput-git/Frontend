@@ -8,7 +8,7 @@ A modern, responsive landing page built with **Next.js 14** and **Material-UI v5
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 14 (App Router).
 - **UI Library**: Material-UI (MUI) v5
 - **Animations**: Framer Motion
 - **Language**: TypeScript
